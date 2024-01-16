@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Exchange Rate App
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" id="container">
+  <div class="center-container">
+
+    <!-- Base Currency -->
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="9">
+            <ion-label position="stacked">Base Currency</ion-label>
+            
+            <!-- Add the search bar to filter currencies -->
+            <ion-searchbar [(ngModel)]="baseCurrency" (ionInput)="filterBaseCurrencies($event)"></ion-searchbar>
+            
+            <!-- Display the filtered currencies in ion-select -->
+            <ion-select 
+              [(ngModel)]="baseCurrency" 
+              (ionChange)="getCountriesBybaseCurrencyCode(baseCurrency)"
+              interface="popover">
+              <ion-select-option disabled>
+                <!-- Header Text -->
+                <ion-label>
+                  Vyber si
+                </ion-label>
+              </ion-select-option>
+              
+              <!-- Options -->
+              <ion-select-option *ngFor="let currency of filteredBaseCurrencies" [value]="currency.code">
+                {{currency.code}} - {{ currency.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="3">
+            <ion-img *ngIf="baseflagUrl" [src]="baseflagUrl" alt="Flag"></ion-img>
+            <ion-img *ngIf="!baseflagUrl" [src]="'https://flagpedia.net/data/flags/w320/us.webp'" alt="Default Flag"></ion-img>
+          </ion-col>
+        </ion-row>
+        <ion-col size="3">
+          <ion-input placeholder="Amount" [(ngModel)]="baseAmount" type="number" class="value"></ion-input>
+        </ion-col>
+      </ion-grid>
+    </ion-item>
+
+    <!-- Swap Button -->
+    <ion-item>
+      <ion-button class="swap-button" (click)="swapCurrencies()">
+        <ion-icon name="swap-horizontal" class="swap-icon"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!-- Target Currency -->
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="9">
+            <ion-label position="stacked">Target Currency</ion-label>
+            
+            <!-- Add the search bar to filter currencies -->
+            <ion-searchbar [(ngModel)]="targetCurrency" (ionInput)="filterTargetCurrencies($event)"></ion-searchbar>
+            
+            <!-- Display the filtered currencies in ion-select -->
+            <ion-select 
+              [(ngModel)]="targetCurrency" 
+              (ionChange)="getCountriesBytargetCurrencyCode(targetCurrency)"
+              interface="popover" >
+              <ion-select-option disabled>
+                <!-- Header Text -->
+                <ion-label>
+                  Vyber si menu
+                </ion-label>
+              </ion-select-option>
+
+              <!-- Options -->
+              <ion-select-option *ngFor="let currency of filteredTargetCurrencies" [value]="currency.code">
+                {{currency.code}} - {{ currency.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="3">
+            <ion-img *ngIf="targetflagUrl" [src]="targetflagUrl" alt="Flag"></ion-img>
+            <ion-img *ngIf="!targetflagUrl" [src]="'https://flagpedia.net/data/org/w320/eu.webp'" alt="Default Flag"></ion-img>
+          </ion-col>
+        </ion-row>
+        <ion-col size="3">
+          <ion-label position="stacked">Result</ion-label>
+          <br>
+          <ion-item *ngIf="exchangeRates" class="value">
+            {{ baseAmount }} {{ baseCurrency }}  to {{ exchangeRates[targetCurrency] * baseAmount }} {{ targetCurrency }}
+          </ion-item>
+        
+          <ion-item *ngIf="!exchangeRates" class="value">
+            No conversion yet...
+          </ion-item>
+        </ion-col>
+      </ion-grid>
+    </ion-item>
+
+    <!-- Get Exchange Rates Button -->
+    <ion-button expand="full" (click)="getRates()">Get Exchange Rates</ion-button>
+
+  </div>
+</ion-content>

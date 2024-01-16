@@ -1,0 +1,13 @@
+{
+  "name": "currency-converter",
+  "integrations": {
+    "capacitor": {}
+  },
+    "resources": {
+      "icon": "src/assets/icon/icon.png",
+      "splash": "src/assets/splash/splash.png"
+    },
+  
+  
+  "type": "angular"
+}
